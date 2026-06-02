@@ -454,19 +454,35 @@
 
     /* ── PDF PRINT STYLES ── */
     @media print {
-      body { background: #fff !important; color: #0E1F3D !important; padding: 0 !important; }
+      @page { size: A4; margin: 14mm 14mm 12mm 14mm; }
+      html, body { background: #fff !important; color: #0E1F3D !important; padding: 0 !important; margin: 0 !important; font-size: 11px !important; }
       .site-header, .page:not(.active), #session-modal, .btn-primary, .btn-green { display: none !important; }
       #download-btn-wrap { display: none !important; }
       .page.active { display: block !important; }
-      * { color: #0E1F3D !important; background: none !important; border-color: #ccc !important; }
-      #pdf-header { display: block !important; }
-      #pdf-footer { display: block !important; }
-      .next-steps-card { border: 1.5px solid #0E1F3D !important; border-radius: 12px; padding: 20px; }
-      .tier-badge { background: #F5C518 !important; color: #0E1F3D !important; border-radius: 20px; padding: 6px 16px; display: inline-block; font-weight: 700; margin-bottom: 12px; }
-      .next-step-highlight { background: rgba(245,197,24,0.15) !important; border-left: 4px solid #F5C518 !important; border-radius: 8px; padding: 14px 18px; margin-top: 16px; }
-      h2 { color: #0E1F3D !important; font-size: 20px; margin-bottom: 12px; }
-      p { color: #333 !important; line-height: 1.7; }
-      .score-summary-print { display: block !important; }
+      * { color: #0E1F3D !important; background: none !important; border-color: #ccc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      #pdf-header { display: flex !important; align-items: center; justify-content: space-between; padding: 0 0 8px 0; border-bottom: 2px solid #F5C518; margin-bottom: 10px; }
+      #pdf-header img { height: 42px; object-fit: contain; }
+      #pdf-header .pdf-header-text { text-align: right; }
+      #pdf-header .pdf-header-text div:first-child { font-size: 15px; font-weight: 700; }
+      #pdf-header .pdf-header-text div:last-child { font-size: 10px; color: #555; }
+      #pdf-footer { display: block !important; text-align: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 10px; color: #777; }
+      .score-summary-print { display: flex !important; align-items: center; gap: 16px; background: #fffbee !important; border: 1.5px solid #F5C518 !important; border-radius: 8px; padding: 10px 16px; margin-bottom: 10px; }
+      .score-summary-print .score-big { font-size: 36px; font-weight: 800; color: #0E1F3D; line-height: 1; }
+      .score-summary-print .score-detail { flex: 1; }
+      .score-summary-print .score-detail .out-of { font-size: 10px; color: #777; }
+      .score-summary-print .score-detail .tier-name { font-weight: 700; font-size: 12px; color: #0E1F3D; margin: 2px 0; }
+      .score-summary-print .score-detail .tier-desc { font-size: 10px; color: #444; line-height: 1.4; }
+      .next-steps-card { border: 1.5px solid #0E1F3D !important; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; }
+      .tier-badge { background: #F5C518 !important; color: #0E1F3D !important; border-radius: 20px; padding: 3px 12px; display: inline-block; font-weight: 700; font-size: 10px; margin-bottom: 6px; }
+      .next-step-highlight { background: #fffbee !important; border-left: 3px solid #F5C518 !important; border-radius: 4px; padding: 8px 12px; margin-top: 8px; font-size: 10.5px; line-height: 1.5; }
+      h2 { color: #0E1F3D !important; font-size: 13px !important; margin-bottom: 6px; line-height: 1.3; }
+      p { color: #333 !important; line-height: 1.5; font-size: 10.5px; margin-bottom: 6px; }
+      #print-breakdown { display: block !important; margin-bottom: 10px; }
+      #print-breakdown div:first-child { font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+      #print-breakdown table { font-size: 10px; }
+      #print-breakdown td { padding: 3px 0; }
+      /* Hide the big title text on next steps page when printing */
+      #page-nextsteps > div:first-child { display: none !important; }
     }
   </style>
 </head>
@@ -474,20 +490,21 @@
 
   <!-- PDF Header (hidden on screen, shown when printing) -->
   <div id="pdf-header" style="display:none; text-align:center; padding:20px 0 10px; border-bottom:2px solid #F5C518; margin-bottom:24px;">
-    <img src="https://media.base44.com/images/public/69fc9732117560d800bc3287/b7c8e1d4e_ProcessToProfitsLogo.jpg" alt="Turning Process Into Profits" style="height:60px; object-fit:contain;" />
-    <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#0E1F3D; margin-top:10px;">Process Power Scorecard Results</div>
-    <div style="font-size:13px; color:#555; margin-top:4px;">Turning Process Into Profits</div>
+    <img src="https://media.base44.com/images/public/69fc9732117560d800bc3287/b7c8e1d4e_ProcessToProfitsLogo.jpg" alt="Turning Process Into Profits" style="height:42px; object-fit:contain;" />
+    <div class="pdf-header-text">
+      <div style="font-family:'Playfair Display',serif; font-weight:700; color:#0E1F3D;">Process Power Scorecard Results</div>
+      <div style="color:#555;">Turning Process Into Profits</div>
+    </div>
   </div>
 
   <!-- Score summary for print -->
-  <div class="score-summary-print" style="display:none; background:#f8f6f0; border:1.5px solid #F5C518; border-radius:12px; padding:16px 24px; margin-bottom:20px; text-align:center;">
-    <div style="font-size:13px; color:#555; margin-bottom:4px;">Your Score</div>
-    <div style="font-size:42px; font-weight:800; color:#0E1F3D;" id="print-score-num">—</div>
-    <div style="font-size:13px; color:#555;">out of 69</div>
-    <div style="margin-top:10px;">
-      <span style="background:#F5C518; color:#0E1F3D; font-weight:700; padding:4px 16px; border-radius:20px; font-size:14px;" id="print-tier-label">—</span>
+  <div class="score-summary-print" style="display:none;">
+    <div class="score-big" id="print-score-num">—</div>
+    <div class="score-detail">
+      <div class="out-of">out of 69</div>
+      <div class="tier-name" id="print-tier-label">—</div>
+      <div class="tier-desc" id="print-tier-desc">—</div>
     </div>
-    <div style="font-size:13px; color:#444; margin-top:10px; line-height:1.6;" id="print-tier-desc">—</div>
   </div>
 
   <!-- Results breakdown for print -->
