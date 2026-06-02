@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Process Power Scorecard | Turning Process Into Profits</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0E1F3D;
+      --navy2: #1A2B55;
+      --gold: #F5C518;
+      --gold2: #FFD700;
+      --green: #18A558;
+      --green2: #22CC6A;
+      --white: #FAFAF8;
+      --muted: rgba(255,255,255,0.6);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(160deg, #0B1830 0%, #142040 60%, #08121F 100%);
+      min-height: 100vh;
+      color: var(--white);
+      padding: 24px 16px 48px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── HEADER ── */
+    .site-header {
+      text-align: center;
+      padding: 16px 0 32px;
+    }
+    .site-header img {
+      height: 72px;
+      object-fit: contain;
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* ── WELCOME PAGE ── */
+    .welcome-hero {
+      text-align: center;
+      padding: 20px 0 36px;
+    }
+    .welcome-hero .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .welcome-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .welcome-hero h1 span { color: var(--gold); }
+
+    .welcome-card {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(240,192,64,0.25);
+      border-radius: 20px;
+      padding: 36px 40px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .welcome-card p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.82);
+      margin-bottom: 20px;
+    }
+    .welcome-card p:last-child { margin-bottom: 0; }
+    .welcome-card .note {
+      background: rgba(240,192,64,0.12);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      margin-top: 4px;
+    }
+    .welcome-card .note strong { color: var(--gold); }
+
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      margin-bottom: 28px;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .progress-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      height: 5px;
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(240,192,64,0.2);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .question-item {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .question-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .question-text {
+      font-size: 15px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .rating-row {
+      display: flex;
+      gap: 10px;
+    }
+    .rating-btn {
+      flex: 1;
+      padding: 11px 8px;
+      border: 1.5px solid rgba(240,192,64,0.25);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      line-height: 1.3;
+    }
+    .rating-btn:hover {
+      border-color: var(--gold);
+      background: rgba(240,192,64,0.1);
+      color: var(--white);
+    }
+    .rating-btn.selected {
+      border-color: var(--gold);
+      background: rgba(240,192,64,0.18);
+      color: var(--white);
+      font-weight: 700;
+    }
+    .rating-btn .score-num {
+      display: block;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 3px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy);
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      margin-top: 8px;
+      letter-spacing: 0.3px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(240,192,64,0.4);
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-secondary {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.4);
+      color: var(--white);
+    }
+    .btn-green {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+    }
+    .btn-green:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(46,139,87,0.45);
+    }
+
+    /* ── RESULTS PAGE ── */
+    .results-hero {
+      text-align: center;
+      padding: 10px 0 32px;
+    }
+    .score-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(240,192,64,0.15), rgba(240,192,64,0.05));
+      border: 3px solid var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .score-circle .score-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .score-circle .score-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+    .result-tier {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .result-description {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.8);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    /* ── SECTION BREAKDOWN ── */
+    .breakdown-card {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(240,192,64,0.15);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .breakdown-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .breakdown-row:last-child { margin-bottom: 0; }
+    .breakdown-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      flex: 1;
+    }
+    .breakdown-bar-wrap {
+      flex: 2;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .breakdown-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+    }
+    .breakdown-score {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      min-width: 36px;
+      text-align: right;
+    }
+
+    /* ── NEXT STEPS PAGE ── */
+    .next-steps-card {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(240,192,64,0.2);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 20px;
+    }
+    .next-steps-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .next-steps-card .tier-badge {
+      display: inline-block;
+      background: rgba(240,192,64,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .next-steps-card p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 16px;
+    }
+    .next-steps-card p:last-child { margin-bottom: 0; }
+    .next-step-highlight {
+      background: rgba(46,139,87,0.12);
+      border-left: 3px solid var(--green2);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      margin-top: 8px;
+    }
+    .next-step-highlight strong { color: var(--green2); }
+
+    /* ── CLOSING PAGE ── */
+    .closing-hero {
+      text-align: center;
+      padding: 20px 0 36px;
+    }
+    .closing-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 4vw, 38px);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+    .closing-hero h1 span { color: var(--gold); }
+    .closing-card {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(240,192,64,0.2);
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 24px;
+    }
+    .closing-card p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 18px;
+    }
+    .closing-card p:last-child { margin-bottom: 0; }
+
+    .error-banner {
+      color: #FF8888;
+      font-size: 13px;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 540px) {
+      body { padding: 12px 10px 48px; }
+      .site-header img { height: 54px; }
+      .section-card, .welcome-card, .next-steps-card, .closing-card, .breakdown-card { padding: 20px 16px; }
+      .rating-btn { font-size: 11px; padding: 8px 4px; }
+      .rating-btn .score-num { font-size: 16px; }
+      h1 { font-size: 24px !important; }
+      h2 { font-size: 20px !important; }
+      h3 { font-size: 17px !important; }
+      p, label, li { font-size: 14px !important; line-height: 1.6 !important; }
+      .btn-primary { font-size: 15px !important; padding: 14px 20px !important; width: 100%; }
+      input, textarea, select { font-size: 16px !important; } /* prevents iOS zoom */
+      .progress-meta { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="site-header">
+    <img src="https://media.base44.com/images/public/69fc9732117560d800bc3287/b7c8e1d4e_ProcessToProfitsLogo.jpg" alt="Turning Process Into Profits" />
+  </div>
+
+  <div class="container">
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 1: WELCOME                        -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page active" id="page-welcome">
+      <div class="welcome-hero">
+        
+        <h1>Welcome to the<br/><span>Process Power Scorecard</span></h1>
+      </div>
+      <div class="welcome-card">
+        <p>Discover how strong your business systems really are. This quick assessment helps you uncover where your operations are thriving and where a few tweaks could unlock more clarity, consistency, and growth.</p>
+        <p>Whether you're laying your Foundations, staying In Motion, or running Powerhouse Operations, you'll gain instant insight into how to streamline your processes and scale with confidence.</p>
+        <div class="note">
+          <strong>Not in business yet? No problem!</strong><br/>
+          If you're still in the idea stage, use this scorecard as a readiness check. It will help you see the key systems and structures you'll want to build once you launch, so you can start thinking like a business owner from day one.
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goTo('page-contact')">Let's get started →</button>
+    </div>
+
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 1B: CONTACT / OPT-IN             -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-contact">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span>Before we begin</span>
+          <span></span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:5%"></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Let's Stay Connected</div>
+        <div class="section-subtitle">Enter your details below to receive your personalized scorecard results.</div>
+
+        <div class="input-group" style="display:flex; flex-direction:column; gap:16px;">
+          <div>
+            <label style="font-size:13px; color:rgba(255,255,255,0.55); font-weight:600; letter-spacing:0.5px; display:block; margin-bottom:8px;">First Name</label>
+            <input type="text" id="contact-firstname" placeholder="Your first name" style="background:rgba(255,255,255,0.07); border:1.5px solid rgba(240,192,64,0.25); border-radius:12px; padding:14px 18px; font-size:15px; color:#FAFAF8; font-family:'Inter',sans-serif; width:100%; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#F0C040'" onblur="this.style.borderColor='rgba(240,192,64,0.25)'" />
+          </div>
+          <div>
+            <label style="font-size:13px; color:rgba(255,255,255,0.55); font-weight:600; letter-spacing:0.5px; display:block; margin-bottom:8px;">Email Address</label>
+            <input type="email" id="contact-email" placeholder="Your email address" style="background:rgba(255,255,255,0.07); border:1.5px solid rgba(240,192,64,0.25); border-radius:12px; padding:14px 18px; font-size:15px; color:#FAFAF8; font-family:'Inter',sans-serif; width:100%; outline:none; transition:border-color 0.2s;" onfocus="this.style.borderColor='#F0C040'" onblur="this.style.borderColor='rgba(240,192,64,0.25)'" />
+          </div>
+          <div style="background:rgba(240,192,64,0.07); border:1.5px solid rgba(240,192,64,0.2); border-radius:12px; padding:16px 18px; margin-top:4px;">
+            <label style="display:flex; align-items:flex-start; gap:14px; cursor:pointer;">
+              <input type="checkbox" id="contact-optin" style="margin-top:3px; width:18px; height:18px; min-width:18px; accent-color:#F0C040; cursor:pointer;" />
+              <span style="font-size:14px; line-height:1.6; color:rgba(255,255,255,0.75);">I agree to receive communications from <strong style="color:#F0C040;">Turning Process Into Profits</strong> including tips, resources, and offers. I understand I can opt-out at any time.</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div id="err-contact" class="error-banner"></div>
+      <button class="btn-primary" onclick="submitContact()">Start the Scorecard →</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 2: SECTION 1 — Business Clarity  -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-section1">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span>Section 1 of 5</span>
+          <span id="prog1-pct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="prog1-fill" style="width:20%"></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Business Clarity &amp; Direction</div>
+        <div class="section-subtitle">Rate each statement on how well it applies to your business right now.</div>
+
+        <div class="question-item" data-q="q1_1">
+          <div class="question-text">1. I am clear (or gaining clarity) on who my ideal customer is and what they need.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q1_1')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q1_1')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q1_1')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q1_2">
+          <div class="question-text">2. I have (or am developing) a clear niche and value proposition that sets my business apart.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q1_2')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q1_2')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q1_2')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q1_3">
+          <div class="question-text">3. My brand message and visual identity reflect the transformation I offer.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q1_3')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q1_3')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q1_3')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q1_4">
+          <div class="question-text">4. I have (or am developing) a clear marketing strategy that aligns with my business goals and target audience.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q1_4')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q1_4')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q1_4')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q1_5">
+          <div class="question-text">5. I have established a mission, vision, and values statement that guides business decisions.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q1_5')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q1_5')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q1_5')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q1_6">
+          <div class="question-text">6. I have a business roadmap established for the next 1–5 years to support long-term growth.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q1_6')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q1_6')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q1_6')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+      </div>
+      <div id="err-s1" class="error-banner"></div>
+      <button class="btn-primary" onclick="nextSection('page-section1','page-section2',['q1_1','q1_2','q1_3','q1_4','q1_5','q1_6'],'err-s1')">Next: Clarity &amp; Structure →</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 3: SECTION 2 — Clarity & Structure -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-section2">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span>Section 2 of 5</span><span>40%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Clarity &amp; Structure</div>
+        <div class="section-subtitle">Rate each statement on how well it applies to your business right now.</div>
+
+        <div class="question-item" data-q="q2_1">
+          <div class="question-text">1. I have (or plan to have) clear, documented processes for how my business runs.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q2_1')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q2_1')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q2_1')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q2_2">
+          <div class="question-text">2. I understand (or am defining) how each part of my business connects and supports the bigger picture.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q2_2')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q2_2')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q2_2')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q2_3">
+          <div class="question-text">3. I follow (or will follow) consistent steps to complete recurring tasks and projects.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q2_3')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q2_3')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q2_3')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+      </div>
+      <div id="err-s2" class="error-banner"></div>
+      <button class="btn-primary" onclick="nextSection('page-section2','page-section3',['q2_1','q2_2','q2_3'],'err-s2')">Next: Systems &amp; Tools →</button>
+      <button class="btn-secondary" onclick="goTo('page-section1')">← Back</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 4: SECTION 3 — Systems & Tools   -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-section3">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span>Section 3 of 5</span><span>60%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Systems &amp; Tools</div>
+        <div class="section-subtitle">Rate each statement on how well it applies to your business right now.</div>
+
+        <div class="question-item" data-q="q3_1">
+          <div class="question-text">1. I use (or am setting up) systems that help me manage my business efficiently, such as project management or CRM tools.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q3_1')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q3_1')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q3_1')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q3_2">
+          <div class="question-text">2. I have (or am developing) a clear process for tracking key business data, like sales, inventory, or client progress.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q3_2')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q3_2')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q3_2')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q3_3">
+          <div class="question-text">3. My tools and systems support (or will support) smooth communication and collaboration within my business.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q3_3')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q3_3')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q3_3')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q3_4">
+          <div class="question-text">4. I have established an effective lead funnel and understand my conversion rate.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q3_4')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q3_4')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q3_4')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+      </div>
+      <div id="err-s3" class="error-banner"></div>
+      <button class="btn-primary" onclick="nextSection('page-section3','page-section4',['q3_1','q3_2','q3_3','q3_4'],'err-s3')">Next: Accountability &amp; Support →</button>
+      <button class="btn-secondary" onclick="goTo('page-section2')">← Back</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 5: SECTION 4 — Accountability    -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-section4">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span>Section 4 of 5</span><span>80%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:80%"></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Accountability &amp; Support</div>
+        <div class="section-subtitle">Rate each statement on how well it applies to your business right now.</div>
+
+        <div class="question-item" data-q="q4_1">
+          <div class="question-text">1. I have (or am building) routines and habits that help me stay consistent and focused on my goals.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q4_1')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q4_1')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q4_1')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q4_2">
+          <div class="question-text">2. I have (or am seeking) support from spouse/partner, mentors, peers, or a community that helps me stay accountable.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q4_2')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q4_2')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q4_2')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q4_3">
+          <div class="question-text">3. I have (or am building) a trusted network of professionals I can reach out to for specialized support in areas such as finance, legal, marketing, or technology.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q4_3')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q4_3')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q4_3')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q4_4">
+          <div class="question-text">4. I regularly review (or plan to review) my progress and adjust my actions to stay on track.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q4_4')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q4_4')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q4_4')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q4_5">
+          <div class="question-text">5. I have (or am developing) strong fiscal knowledge and management skills, including understanding OpEx, CapEx, RevEx, and FinEx.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q4_5')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q4_5')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q4_5')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+      </div>
+      <div id="err-s4" class="error-banner"></div>
+      <button class="btn-primary" onclick="nextSection('page-section4','page-section5',['q4_1','q4_2','q4_3','q4_4','q4_5'],'err-s4')">Next: Growth &amp; Optimization →</button>
+      <button class="btn-secondary" onclick="goTo('page-section3')">← Back</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 6: SECTION 5 — Growth            -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-section5">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span>Section 5 of 5</span><span>95%</span></div>
+        <div class="progress-track"><div class="progress-fill" style="width:95%"></div></div>
+      </div>
+      <div class="section-card">
+        <div class="section-title">Growth &amp; Optimization</div>
+        <div class="section-subtitle">Rate each statement on how well it applies to your business right now.</div>
+
+        <div class="question-item" data-q="q5_1">
+          <div class="question-text">1. I regularly review (or plan to review) key performance indicators, such as sales, marketing, and operations data, at least once a week with my team or business leaders.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q5_1')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q5_1')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q5_1')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q5_2">
+          <div class="question-text">2. I have (or am developing) strategies to increase efficiency, profitability, and customer satisfaction.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q5_2')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q5_2')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q5_2')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q5_3">
+          <div class="question-text">3. I actively seek (or am open to seeking) new opportunities for growth, innovation, or expansion.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q5_3')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q5_3')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q5_3')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q5_4">
+          <div class="question-text">4. I know my customer satisfaction rating and track it regularly.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q5_4')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q5_4')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q5_4')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+        <div class="question-item" data-q="q5_5">
+          <div class="question-text">5. I have established my current and projected profitability status to guide financial decisions.</div>
+          <div class="rating-row">
+            <button class="rating-btn" data-val="1" onclick="rate(this,'q5_5')"><span class="score-num">1</span>Not yet in place</button>
+            <button class="rating-btn" data-val="2" onclick="rate(this,'q5_5')"><span class="score-num">2</span>In progress</button>
+            <button class="rating-btn" data-val="3" onclick="rate(this,'q5_5')"><span class="score-num">3</span>Fully in place</button>
+          </div>
+        </div>
+      </div>
+      <div id="err-s5" class="error-banner"></div>
+      <button class="btn-primary" onclick="submitScorecard()">See My Results ✨</button>
+      <button class="btn-secondary" onclick="goTo('page-section4')">← Back</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 7: RESULTS                        -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-results">
+      <div class="results-hero">
+        <div class="score-circle">
+          <span class="score-num" id="result-score">0</span>
+          <span class="score-label">out of 69</span>
+        </div>
+        <div class="result-tier" id="result-tier"></div>
+        <div class="result-description" id="result-desc"></div>
+      </div>
+
+      <div class="breakdown-card">
+        <h3>Your Section Breakdown</h3>
+        <div class="breakdown-row">
+          <div class="breakdown-label">Business Clarity &amp; Direction</div>
+          <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-s1" style="width:0%"></div></div>
+          <div class="breakdown-score" id="bscore-s1">—</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">Clarity &amp; Structure</div>
+          <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-s2" style="width:0%"></div></div>
+          <div class="breakdown-score" id="bscore-s2">—</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">Systems &amp; Tools</div>
+          <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-s3" style="width:0%"></div></div>
+          <div class="breakdown-score" id="bscore-s3">—</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">Accountability &amp; Support</div>
+          <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-s4" style="width:0%"></div></div>
+          <div class="breakdown-score" id="bscore-s4">—</div>
+        </div>
+        <div class="breakdown-row">
+          <div class="breakdown-label">Growth &amp; Optimization</div>
+          <div class="breakdown-bar-wrap"><div class="breakdown-bar" id="bar-s5" style="width:0%"></div></div>
+          <div class="breakdown-score" id="bscore-s5">—</div>
+        </div>
+      </div>
+
+      <button class="btn-primary" onclick="goTo('page-nextsteps')">See My Next Steps →</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 8: NEXT STEPS                     -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-nextsteps">
+      <div style="text-align:center; margin-bottom:32px;">
+        <div style="font-family:'Playfair Display',serif; font-size:clamp(22px,4vw,32px); font-weight:700; margin-bottom:16px;">Your Process Power Scorecard Results</div>
+        <p style="font-size:15px; line-height:1.8; color:rgba(255,255,255,0.7); max-width:560px; margin:0 auto 14px;">Every business is on its own unique journey, and your score reflects where you are right now in building strong, sustainable operations. This isn't about perfection — it's about progress.</p>
+        <p style="font-size:15px; line-height:1.8; color:rgba(255,255,255,0.7); max-width:560px; margin:0 auto;">Use the next steps below as your personal roadmap. Focus on one area at a time, take consistent action, and celebrate every bit of progress along the way. Remember, transformation happens through clarity, structure, and support — and you're already on that path.</p>
+      </div>
+
+      <div class="next-steps-card">
+        <div class="tier-badge" id="ns-badge"></div>
+        <h2 id="ns-title"></h2>
+        <p id="ns-body"></p>
+        <div class="next-step-highlight" id="ns-action"></div>
+      </div>
+
+      <button class="btn-primary" onclick="goTo('page-closing')">Your Next Level Awaits →</button>
+    </div>
+
+    <!-- ══════════════════════════════════════ -->
+    <!-- PAGE 9: CLOSING                        -->
+    <!-- ══════════════════════════════════════ -->
+    <div class="page" id="page-closing">
+      <div class="closing-hero">
+        <h1>Your Next Level <span>Starts Here</span></h1>
+      </div>
+      <div class="closing-card">
+        <p>Building a business that runs smoothly and supports your bigger vision takes time, intention, and courage. Wherever you are on your journey, know that every improvement you make brings you closer to the freedom and impact you're creating this business for.</p>
+        <p>Keep showing up, keep refining, and remember that you don't have to do it alone.</p>
+        
+      </div>
+
+      <div style="background:rgba(240,192,64,0.08); border:1px solid rgba(240,192,64,0.25); border-radius:20px; padding:36px 40px; text-align:center; margin-bottom:20px;">
+        <div style="font-family:'Playfair Display',serif; font-size:clamp(20px,3.5vw,26px); font-weight:700; margin-bottom:20px;">Take Your Next Step</div>
+        <p style="font-size:15px; line-height:1.8; color:rgba(255,255,255,0.75); margin-bottom:24px;">If you're ready to strengthen your systems, create more clarity and flow in your business, Book a Business Acceleration Session to uncover your next best moves and start building the structure that supports your growth and freedom.</p>
+        <button onclick="openSessionModal()" class="btn-green" id="booking-btn">📅 Request a Business Acceleration Session</button>
+      </div>
+
+      <div style="text-align:center; padding:20px 0;">
+        <img src="https://media.base44.com/images/public/69fc9732117560d800bc3287/b7c8e1d4e_ProcessToProfitsLogo.jpg" alt="Turning Process Into Profits" style="height:56px; object-fit:contain; opacity:0.8;" />
+      </div>
+    </div>
+
+  </div><!-- /container -->
+
+  <script>
+    // ── State
+    const answers = {};
+
+    function submitContact() {
+      const firstName = document.getElementById('contact-firstname').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const optin = document.getElementById('contact-optin').checked;
+      const err = document.getElementById('err-contact');
+
+      if (!firstName) { err.textContent = 'Please enter your first name.'; return; }
+      if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
+      if (!optin) { err.textContent = 'Please check the box to agree to receive communications before continuing.'; return; }
+
+      err.textContent = '';
+      // Store for later use
+      window.scorecardContact = { firstName, email, optin };
+      goTo('page-section1');
+    }
+
+
+
+    function rate(btn, qKey) {
+      const row = btn.closest('.rating-row');
+      row.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      answers[qKey] = parseInt(btn.dataset.val);
+    }
+
+    function goTo(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextSection(fromPage, toPage, qKeys, errId) {
+      const unanswered = qKeys.filter(k => answers[k] === undefined);
+      if (unanswered.length > 0) {
+        document.getElementById(errId).textContent = `Please rate all ${unanswered.length} remaining question(s) before continuing.`;
+        return;
+      }
+      document.getElementById(errId).textContent = '';
+      goTo(toPage);
+    }
+
+    function sectionScore(qKeys) {
+      return qKeys.reduce((sum, k) => sum + (answers[k] || 0), 0);
+    }
+
+    function submitScorecard() {
+      const s5keys = ['q5_1','q5_2','q5_3','q5_4','q5_5'];
+      const unanswered = s5keys.filter(k => answers[k] === undefined);
+      if (unanswered.length > 0) {
+        document.getElementById('err-s5').textContent = `Please rate all ${unanswered.length} remaining question(s) before continuing.`;
+        return;
+      }
+      document.getElementById('err-s5').textContent = '';
+
+      const s1 = sectionScore(['q1_1','q1_2','q1_3','q1_4','q1_5','q1_6']);
+      const s2 = sectionScore(['q2_1','q2_2','q2_3']);
+      const s3 = sectionScore(['q3_1','q3_2','q3_3','q3_4']);
+      const s4 = sectionScore(['q4_1','q4_2','q4_3','q4_4','q4_5']);
+      const s5 = sectionScore(['q5_1','q5_2','q5_3','q5_4','q5_5']);
+      const total = s1 + s2 + s3 + s4 + s5;
+
+      // Results
+      let tier, desc, nsBadge, nsTitle, nsBody, nsAction;
+
+      if (total <= 39) {
+        tier = 'Process Power Foundations';
+        desc = "You're in the early stages of building your business systems. The focus is still on building.";
+        nsBadge = 'Process Power Foundations (0–39 points)';
+        nsTitle = "You're in the early stages of building your business foundations, and that's a powerful place to be.";
+        nsBody = "This is your time to create clarity and direction. Start by focusing on your mission, your ideal customer, and the systems that will make your daily operations smoother.";
+        nsAction = "<strong>Next step:</strong> Choose one area that feels most urgent, like documenting your processes or setting up a simple project management tool, and commit to improving it over the next 30 days. Small, consistent action will build your momentum.";
+      } else if (total <= 55) {
+        tier = 'Process Power in Motion';
+        desc = "You've built a solid foundation, and your business is running with some structure and consistency. The next step is to refine and optimize.";
+        nsBadge = 'Process Power in Motion (40–55 points)';
+        nsTitle = "You've already built a strong foundation, and now it's about refinement.";
+        nsBody = "You're ready to move from managing your business to leading it.";
+        nsAction = "<strong>Next step:</strong> Review your systems and identify one area that could be automated or delegated. Strengthen your accountability by connecting with a mentor or peer group who can help you stay focused as you scale.";
+      } else {
+        tier = 'Process Powerhouse Operations';
+        desc = "You're operating at a high level of clarity and efficiency. Now it's about scaling with intention, innovating your offers, and continuing to strengthen your business empire.";
+        nsBadge = 'Process Powerhouse Operations (56–69 points)';
+        nsTitle = "You're operating with clarity, confidence, and structure.";
+        nsBody = "Your systems are working for you, and you're ready to scale with intention.";
+        nsAction = "<strong>Next step:</strong> Focus on innovation and leadership. Review your data regularly, explore new growth opportunities, and invest in developing your team or network. Keep refining your financial strategy so your business continues to grow sustainably.";
+      }
+
+      // Populate results page
+      document.getElementById('result-score').textContent = total;
+      document.getElementById('result-tier').textContent = tier;
+      document.getElementById('result-desc').textContent = desc;
+
+      // Section bars (max scores: s1=18, s2=9, s3=12, s4=15, s5=15)
+      const maxes = [18, 9, 12, 15, 15];
+      const scores = [s1, s2, s3, s4, s5];
+      scores.forEach((sc, i) => {
+        const idx = i + 1;
+        const pct = Math.round((sc / maxes[i]) * 100);
+        document.getElementById(`bar-s${idx}`).style.width = pct + '%';
+        document.getElementById(`bscore-s${idx}`).textContent = `${sc}/${maxes[i]}`;
+      });
+
+      // Populate next steps
+      document.getElementById('ns-badge').textContent = nsBadge;
+      document.getElementById('ns-title').textContent = nsTitle;
+      document.getElementById('ns-body').textContent = nsBody;
+      document.getElementById('ns-action').innerHTML = nsAction;
+
+      goTo('page-results');
+    }
+  </script>
+
+<!-- Session Request Modal -->
+<div id="session-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; align-items:flex-start; justify-content:center; padding:16px; box-sizing:border-box; overflow-y:auto;">
+  <div style="background:linear-gradient(160deg, #0E1F3D 0%, #1A2B55 100%); border:1px solid rgba(240,192,64,0.3); border-radius:20px; padding:28px 20px; max-width:480px; width:100%; position:relative; margin:auto;">
+    <button onclick="closeSessionModal()" style="position:absolute; top:16px; right:18px; background:none; border:none; color:rgba(255,255,255,0.5); font-size:22px; cursor:pointer; line-height:1;">✕</button>
+    <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#FAFAF8; margin-bottom:8px;">Request a Session</div>
+    <p style="font-size:14px; color:rgba(255,255,255,0.6); margin-bottom:24px; line-height:1.6;">Fill in the details below and our team will reach out to confirm your session time.</p>
+
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div>
+        <label style="font-size:13px; color:rgba(255,255,255,0.6); display:block; margin-bottom:6px;">First Name</label>
+        <input id="sr-name" type="text" placeholder="Your first name" style="width:100%; background:rgba(255,255,255,0.07); border:1.5px solid rgba(240,192,64,0.25); border-radius:10px; padding:12px 16px; font-size:14px; color:#FAFAF8; font-family:'Inter',sans-serif; outline:none; box-sizing:border-box;" onfocus="this.style.borderColor='#F5C518'" onblur="this.style.borderColor='rgba(240,192,64,0.25)'" />
+      </div>
+      <div>
+        <label style="font-size:13px; color:rgba(255,255,255,0.6); display:block; margin-bottom:6px;">Email Address</label>
+        <input id="sr-email" type="email" placeholder="Your email address" style="width:100%; background:rgba(255,255,255,0.07); border:1.5px solid rgba(240,192,64,0.25); border-radius:10px; padding:12px 16px; font-size:14px; color:#FAFAF8; font-family:'Inter',sans-serif; outline:none; box-sizing:border-box;" onfocus="this.style.borderColor='#F5C518'" onblur="this.style.borderColor='rgba(240,192,64,0.25)'" />
+      </div>
+      <div>
+        <label style="font-size:13px; color:rgba(255,255,255,0.6); display:block; margin-bottom:6px;">Preferred Day & Time</label>
+        <input id="sr-time" type="text" placeholder="e.g. Weekday mornings, Thursday afternoons…" style="width:100%; background:rgba(255,255,255,0.07); border:1.5px solid rgba(240,192,64,0.25); border-radius:10px; padding:12px 16px; font-size:14px; color:#FAFAF8; font-family:'Inter',sans-serif; outline:none; box-sizing:border-box;" onfocus="this.style.borderColor='#F5C518'" onblur="this.style.borderColor='rgba(240,192,64,0.25)'" />
+      </div>
+      <div>
+        <label style="font-size:13px; color:rgba(255,255,255,0.6); display:block; margin-bottom:6px;">What's your biggest challenge right now?</label>
+        <textarea id="sr-challenge" placeholder="Tell me a little about where you're at…" rows="3" style="width:100%; background:rgba(255,255,255,0.07); border:1.5px solid rgba(240,192,64,0.25); border-radius:10px; padding:12px 16px; font-size:14px; color:#FAFAF8; font-family:'Inter',sans-serif; outline:none; resize:vertical; box-sizing:border-box;" onfocus="this.style.borderColor='#F5C518'" onblur="this.style.borderColor='rgba(240,192,64,0.25)'"></textarea>
+      </div>
+
+      <button onclick="submitSessionRequest()" id="sr-submit-btn" style="background:linear-gradient(135deg, #18A558, #22CC6A); color:#fff; border:none; border-radius:12px; padding:14px 24px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; margin-top:4px;">Send My Request</button>
+      <div id="sr-success" style="display:none; text-align:center; color:#22CC6A; font-size:14px; font-weight:600; padding:10px 0;">✅ Request sent! Our team will be in touch soon.</div>
+      <div id="sr-error" style="display:none; text-align:center; color:#FF8888; font-size:13px; padding:6px 0;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openSessionModal() {
+  // Pre-fill name and email if already collected
+  var firstName = window._contactFirstName || '';
+  var email = window._contactEmail || '';
+  if (firstName) document.getElementById('sr-name').value = firstName;
+  if (email) document.getElementById('sr-email').value = email;
+  var modal = document.getElementById('session-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSessionModal() {
+  document.getElementById('session-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Close modal if clicking outside
+document.getElementById('session-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeSessionModal();
+});
+
+async function submitSessionRequest() {
+  var name = document.getElementById('sr-name').value.trim();
+  var email = document.getElementById('sr-email').value.trim();
+  var time = document.getElementById('sr-time').value.trim();
+  var challenge = document.getElementById('sr-challenge').value.trim();
+  var errEl = document.getElementById('sr-error');
+  var successEl = document.getElementById('sr-success');
+  var btn = document.getElementById('sr-submit-btn');
+
+  errEl.style.display = 'none';
+  successEl.style.display = 'none';
+
+  if (!name || !email) {
+    errEl.textContent = 'Please enter your name and email.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!email.includes('@')) {
+    errEl.textContent = 'Please enter a valid email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  try {
+    var res = await fetch('https://process-to-profits-00bc3287.base44.app/functions/saveSessionRequest', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, email, preferred_time: time, challenge, submitted_at: new Date().toISOString() })
+    });
+    var data = await res.json().catch(() => ({}));
+    if (res.ok && data.success) {
+      successEl.style.display = 'block';
+      btn.style.display = 'none';
+    } else {
+      throw new Error(data.error || 'Server error');
+    }
+  } catch(e) {
+    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+    btn.textContent = 'Send My Request';
+    btn.disabled = false;
+  }
+}
+</script>
+
+</body>
+</html>
