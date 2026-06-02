@@ -455,7 +455,8 @@
     /* ── PDF PRINT STYLES ── */
     @media print {
       body { background: #fff !important; color: #0E1F3D !important; padding: 0 !important; }
-      .site-header, .page:not(.active), #session-modal, .btn-primary, .btn-green, #download-btn-wrap { display: none !important; }
+      .site-header, .page:not(.active), #session-modal, .btn-primary, .btn-green { display: none !important; }
+      #download-btn-wrap { display: none !important; }
       .page.active { display: block !important; }
       * { color: #0E1F3D !important; background: none !important; border-color: #ccc !important; }
       #pdf-header { display: block !important; }
@@ -908,7 +909,7 @@
         <div class="next-step-highlight" id="ns-action"></div>
       </div>
 
-      <div id="download-btn-wrap" style="text-align:center; margin-bottom:16px;">
+      <div id="download-btn-wrap" style="text-align:center; margin-bottom:16px; display:block;">
         <button onclick="downloadPDF()" style="background:rgba(245,197,24,0.12); border:1.5px solid #F5C518; color:#F5C518; border-radius:12px; padding:14px 28px; font-size:15px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; display:inline-flex; align-items:center; gap:8px;">
           ⬇️ Download My Results as PDF
         </button>
