@@ -451,9 +451,62 @@
       input, textarea, select { font-size: 16px !important; } /* prevents iOS zoom */
       .progress-meta { font-size: 12px; }
     }
+
+    /* ── PDF PRINT STYLES ── */
+    @media print {
+      body { background: #fff !important; color: #0E1F3D !important; padding: 0 !important; }
+      .site-header, .page:not(.active), #session-modal, .btn-primary, .btn-green, #download-btn-wrap { display: none !important; }
+      .page.active { display: block !important; }
+      * { color: #0E1F3D !important; background: none !important; border-color: #ccc !important; }
+      #pdf-header { display: block !important; }
+      #pdf-footer { display: block !important; }
+      .next-steps-card { border: 1.5px solid #0E1F3D !important; border-radius: 12px; padding: 20px; }
+      .tier-badge { background: #F5C518 !important; color: #0E1F3D !important; border-radius: 20px; padding: 6px 16px; display: inline-block; font-weight: 700; margin-bottom: 12px; }
+      .next-step-highlight { background: rgba(245,197,24,0.15) !important; border-left: 4px solid #F5C518 !important; border-radius: 8px; padding: 14px 18px; margin-top: 16px; }
+      h2 { color: #0E1F3D !important; font-size: 20px; margin-bottom: 12px; }
+      p { color: #333 !important; line-height: 1.7; }
+      .score-summary-print { display: block !important; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- PDF Header (hidden on screen, shown when printing) -->
+  <div id="pdf-header" style="display:none; text-align:center; padding:20px 0 10px; border-bottom:2px solid #F5C518; margin-bottom:24px;">
+    <img src="https://media.base44.com/images/public/69fc9732117560d800bc3287/b7c8e1d4e_ProcessToProfitsLogo.jpg" alt="Turning Process Into Profits" style="height:60px; object-fit:contain;" />
+    <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#0E1F3D; margin-top:10px;">Process Power Scorecard Results</div>
+    <div style="font-size:13px; color:#555; margin-top:4px;">Turning Process Into Profits</div>
+  </div>
+
+  <!-- Score summary for print -->
+  <div class="score-summary-print" style="display:none; background:#f8f6f0; border:1.5px solid #F5C518; border-radius:12px; padding:16px 24px; margin-bottom:20px; text-align:center;">
+    <div style="font-size:13px; color:#555; margin-bottom:4px;">Your Score</div>
+    <div style="font-size:42px; font-weight:800; color:#0E1F3D;" id="print-score-num">—</div>
+    <div style="font-size:13px; color:#555;">out of 69</div>
+    <div style="margin-top:10px;">
+      <span style="background:#F5C518; color:#0E1F3D; font-weight:700; padding:4px 16px; border-radius:20px; font-size:14px;" id="print-tier-label">—</span>
+    </div>
+    <div style="font-size:13px; color:#444; margin-top:10px; line-height:1.6;" id="print-tier-desc">—</div>
+  </div>
+
+  <!-- Results breakdown for print -->
+  <div id="print-breakdown" style="display:none; margin-bottom:20px;">
+    <div style="font-size:15px; font-weight:700; color:#0E1F3D; margin-bottom:10px;">Your Section Breakdown</div>
+    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+      <tr><td style="padding:6px 0; color:#333;">Business Clarity &amp; Direction</td><td id="pb-s1" style="text-align:right; font-weight:600; color:#0E1F3D;">—</td></tr>
+      <tr><td style="padding:6px 0; color:#333; border-top:1px solid #eee;">Clarity &amp; Structure</td><td id="pb-s2" style="text-align:right; font-weight:600; color:#0E1F3D;">—</td></tr>
+      <tr><td style="padding:6px 0; color:#333; border-top:1px solid #eee;">Systems &amp; Tools</td><td id="pb-s3" style="text-align:right; font-weight:600; color:#0E1F3D;">—</td></tr>
+      <tr><td style="padding:6px 0; color:#333; border-top:1px solid #eee;">Accountability &amp; Support</td><td id="pb-s4" style="text-align:right; font-weight:600; color:#0E1F3D;">—</td></tr>
+      <tr><td style="padding:6px 0; color:#333; border-top:1px solid #eee;">Growth &amp; Optimization</td><td id="pb-s5" style="text-align:right; font-weight:600; color:#0E1F3D;">—</td></tr>
+    </table>
+  </div>
+
+  <!-- PDF Footer -->
+  <div id="pdf-footer" style="display:none; text-align:center; margin-top:36px; padding-top:16px; border-top:1px solid #ccc; font-size:12px; color:#777;">
+    <div>Ready to take your next step? Connect with us at <strong>monique.aranda1@gmail.com</strong></div>
+    <div style="margin-top:4px;">© Turning Process Into Profits | turningprocessintoprofits.com</div>
+  </div>
+
 
   <div class="site-header">
     <img src="https://media.base44.com/images/public/69fc9732117560d800bc3287/b7c8e1d4e_ProcessToProfitsLogo.jpg" alt="Turning Process Into Profits" />
@@ -855,6 +908,11 @@
         <div class="next-step-highlight" id="ns-action"></div>
       </div>
 
+      <div id="download-btn-wrap" style="text-align:center; margin-bottom:16px;">
+        <button onclick="downloadPDF()" style="background:rgba(245,197,24,0.12); border:1.5px solid #F5C518; color:#F5C518; border-radius:12px; padding:14px 28px; font-size:15px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; display:inline-flex; align-items:center; gap:8px;">
+          ⬇️ Download My Results as PDF
+        </button>
+      </div>
       <button class="btn-primary" onclick="goTo('page-closing')">Your Next Level Awaits →</button>
     </div>
 
@@ -997,6 +1055,42 @@
       document.getElementById('ns-action').innerHTML = nsAction;
 
       goTo('page-results');
+    }
+
+    function downloadPDF() {
+      // Populate print elements with current results
+      var score = document.getElementById('result-score').textContent;
+      var tier = document.getElementById('result-tier').textContent;
+      var desc = document.getElementById('result-desc').textContent;
+
+      document.getElementById('print-score-num').textContent = score;
+      document.getElementById('print-tier-label').textContent = tier;
+      document.getElementById('print-tier-desc').textContent = desc;
+
+      // Section breakdown
+      var sections = ['s1','s2','s3','s4','s5'];
+      sections.forEach(function(s) {
+        var el = document.getElementById('bscore-' + s);
+        var printEl = document.getElementById('pb-' + s);
+        if (el && printEl) printEl.textContent = el.textContent;
+      });
+
+      // Show print-only elements
+      document.getElementById('pdf-header').style.display = 'block';
+      document.getElementById('pdf-footer').style.display = 'block';
+      document.getElementById('print-breakdown').style.display = 'block';
+      document.querySelectorAll('.score-summary-print').forEach(function(el) { el.style.display = 'block'; });
+
+      // Trigger print
+      window.print();
+
+      // Hide print-only elements after
+      setTimeout(function() {
+        document.getElementById('pdf-header').style.display = 'none';
+        document.getElementById('pdf-footer').style.display = 'none';
+        document.getElementById('print-breakdown').style.display = 'none';
+        document.querySelectorAll('.score-summary-print').forEach(function(el) { el.style.display = 'none'; });
+      }, 1000);
     }
   </script>
 
