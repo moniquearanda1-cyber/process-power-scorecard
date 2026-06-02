@@ -473,16 +473,18 @@
       .score-summary-print .score-detail .tier-name { font-weight: 700; font-size: 12px; color: #0E1F3D; margin: 2px 0; }
       .score-summary-print .score-detail .tier-desc { font-size: 10px; color: #444; line-height: 1.4; }
       .next-steps-card { border: 1.5px solid #0E1F3D !important; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; }
+      #nextsteps-section { page-break-before: always; padding-top: 12px; }
       .tier-badge { background: #F5C518 !important; color: #0E1F3D !important; border-radius: 20px; padding: 3px 12px; display: inline-block; font-weight: 700; font-size: 10px; margin-bottom: 6px; }
       .next-step-highlight { background: #fffbee !important; border-left: 3px solid #F5C518 !important; border-radius: 4px; padding: 8px 12px; margin-top: 8px; font-size: 10.5px; line-height: 1.5; }
       h2 { color: #0E1F3D !important; font-size: 13px !important; margin-bottom: 6px; line-height: 1.3; }
       p { color: #333 !important; line-height: 1.5; font-size: 10.5px; margin-bottom: 6px; }
       #print-breakdown { display: block !important; margin-bottom: 10px; }
+      #nextsteps-print-heading { display: block !important; }
       #print-breakdown div:first-child { font-size: 11px; font-weight: 700; margin-bottom: 6px; }
       #print-breakdown table { font-size: 10px; }
       #print-breakdown td { padding: 3px 0; }
-      /* Hide the big title text on next steps page when printing */
-      #page-nextsteps > div:first-child { display: none !important; }
+      /* Hide the big intro paragraph block but keep the heading wrapper */
+      #nextsteps-intro { display: none !important; }
     }
   </style>
 </head>
@@ -913,12 +915,14 @@
     <!-- PAGE 8: NEXT STEPS                     -->
     <!-- ══════════════════════════════════════ -->
     <div class="page" id="page-nextsteps">
-      <div style="text-align:center; margin-bottom:32px;">
+      <div id="nextsteps-intro" style="text-align:center; margin-bottom:32px;">
         <div style="font-family:'Playfair Display',serif; font-size:clamp(22px,4vw,32px); font-weight:700; margin-bottom:16px;">Your Process Power Scorecard Results</div>
         <p style="font-size:15px; line-height:1.8; color:rgba(255,255,255,0.7); max-width:560px; margin:0 auto 14px;">Every business is on its own unique journey, and your score reflects where you are right now in building strong, sustainable operations. This isn't about perfection — it's about progress.</p>
         <p style="font-size:15px; line-height:1.8; color:rgba(255,255,255,0.7); max-width:560px; margin:0 auto;">Use the next steps below as your personal roadmap. Focus on one area at a time, take consistent action, and celebrate every bit of progress along the way. Remember, transformation happens through clarity, structure, and support — and you're already on that path.</p>
       </div>
 
+      <div id="nextsteps-section">
+      <div style="font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:#0E1F3D; margin-bottom:12px; display:none;" id="nextsteps-print-heading">Your Process Power Scorecard Results</div>
       <div class="next-steps-card">
         <div class="tier-badge" id="ns-badge"></div>
         <h2 id="ns-title"></h2>
@@ -926,6 +930,7 @@
         <div class="next-step-highlight" id="ns-action"></div>
       </div>
 
+      </div><!-- /nextsteps-section -->
       <div id="download-btn-wrap" style="text-align:center; margin-bottom:16px; display:block;">
         <button onclick="downloadPDF()" style="background:rgba(245,197,24,0.12); border:1.5px solid #F5C518; color:#F5C518; border-radius:12px; padding:14px 28px; font-size:15px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; display:inline-flex; align-items:center; gap:8px;">
           ⬇️ Download My Results as PDF
