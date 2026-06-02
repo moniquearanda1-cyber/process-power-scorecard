@@ -465,7 +465,7 @@
       #pdf-header .pdf-header-text { text-align: right; }
       #pdf-header .pdf-header-text div:first-child { font-size: 15px; font-weight: 700; }
       #pdf-header .pdf-header-text div:last-child { font-size: 10px; color: #555; }
-      #pdf-footer { display: block !important; text-align: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 10px; color: #777; }
+      #nextsteps-section #pdf-footer { display: block !important; text-align: center; margin-top: 16px; padding-top: 10px; border-top: 1px solid #ccc; font-size: 10px; color: #777; }
       .score-summary-print { display: flex !important; align-items: center; gap: 16px; background: #fffbee !important; border: 1.5px solid #F5C518 !important; border-radius: 8px; padding: 10px 16px; margin-bottom: 10px; }
       .score-summary-print .score-big { font-size: 36px; font-weight: 800; color: #0E1F3D; line-height: 1; }
       .score-summary-print .score-detail { flex: 1; }
@@ -520,9 +520,6 @@
       <tr><td style="padding:6px 0; color:#333; border-top:1px solid #eee;">Growth &amp; Optimization</td><td id="pb-s5" style="text-align:right; font-weight:600; color:#0E1F3D;">—</td></tr>
     </table>
   </div>
-
-  <!-- PDF Footer -->
-
 
 
   <div class="site-header">
@@ -1101,7 +1098,7 @@
 
       // Show print-only elements
       document.getElementById('pdf-header').style.display = 'block';
-      document.getElementById('pdf-footer').style.display = 'block';
+      // pdf-footer is inside nextsteps-section, shown via print CSS only
       document.getElementById('print-breakdown').style.display = 'block';
       document.querySelectorAll('.score-summary-print').forEach(function(el) { el.style.display = 'block'; });
 
@@ -1111,7 +1108,7 @@
       // Hide print-only elements after
       setTimeout(function() {
         document.getElementById('pdf-header').style.display = 'none';
-        document.getElementById('pdf-footer').style.display = 'none';
+        // pdf-footer is inside nextsteps-section, hidden via inline style
         document.getElementById('print-breakdown').style.display = 'none';
         document.querySelectorAll('.score-summary-print').forEach(function(el) { el.style.display = 'none'; });
       }, 1000);
